@@ -50,7 +50,7 @@ export async function POST(req: Request) {
         where: { id: orgId },
         data: {
           plan: getPlan(subscription),
-          subscriptionId: subscription.id,
+          stripeId: subscription.id,
           periodEnd: getPeriodEnd(subscription),
         },
       })
@@ -66,7 +66,7 @@ export async function POST(req: Request) {
         where: { id: orgId },
         data: {
           plan: getPlan(subscription),
-          subscriptionId: subscription.id,
+          stripeId: subscription.id,
           periodEnd: getPeriodEnd(subscription),
         },
       })
@@ -82,7 +82,7 @@ export async function POST(req: Request) {
         where: { id: orgId },
         data: {
           plan: "free",
-          subscriptionId: null,
+          stripeId: null,
           periodEnd: null,
         },
       })
