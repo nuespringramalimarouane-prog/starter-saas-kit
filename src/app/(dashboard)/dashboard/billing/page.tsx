@@ -31,6 +31,7 @@ export default function BillingPage() {
   const currentPlan = (data.org.plan as Plan) ?? "free"
   const isAdmin = data.role === "ADMIN"
 
+
   return (
     <div className="space-y-6">
       <div>
@@ -64,7 +65,7 @@ export default function BillingPage() {
       <div className="grid gap-4 md:grid-cols-3">
         {(Object.entries(PLANS) as [Plan, typeof PLANS[Plan]][]).map(([key, plan]) => {
           const isCurrent = currentPlan === key
-
+          const members = plan.limits.members;
           return (
             <Card
               key={key}
@@ -87,7 +88,7 @@ export default function BillingPage() {
                     <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
                     {plan.limits.members === Infinity
                       ? "Unlimited members"
-                      : `Up to ${plan.limits.members} member${plan.limits.members > 1 ? "s" : ""}`}
+                      : `Up to ${plan.limits.members} member${members > 1 && "s"}`}
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />

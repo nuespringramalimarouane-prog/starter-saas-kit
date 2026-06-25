@@ -33,7 +33,7 @@ export async function GET() {
       email: session.user.email,
       image: session.user.image,
     },
-    org: membership.org,
+    org: membership?.org,
     role: membership.role,
     memberCount,
   })

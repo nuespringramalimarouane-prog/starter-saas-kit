@@ -30,7 +30,7 @@ export function UpgradeButton({ orgId, priceId, label = "Upgrade" }: Readonly<Up
       return
     }
 
-    window.location.href = data.url
+    globalThis.location.href = data.url
   }
 
   return (

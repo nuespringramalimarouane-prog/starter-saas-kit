@@ -17,6 +17,8 @@ export interface MeData {
     stripeId: string | null
     subscriptionId: string | null
     periodEnd: string | null
+    createdAt: string
+    updatedAt: string
   }
   role: "ADMIN" | "MEMBER" | "VIEWER"
   memberCount: number

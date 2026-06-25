@@ -3,10 +3,10 @@
 import { useMe } from "@/hooks/use-me"
 import { Sidebar } from "@/components/dashboard/sidebar"
 import { Skeleton } from "@/components/ui/skeleton"
-import { Organization } from "@/generated/prisma/client"
+
 
 export function DashboardShell({ children }:Readonly<{ children: React.ReactNode }>) {
-  const { data, loading } = useMe()
+  const { data,loading }= useMe()
 
   if (loading) {
     return (
@@ -21,10 +21,11 @@ export function DashboardShell({ children }:Readonly<{ children: React.ReactNode
   }
 
   if (!data) return null
+  if (!data.org) return null
 
   return (
     <>
-      <Sidebar org={data.org as Organization} user={data.user} role={data.role} />
+      <Sidebar org={data.org} user={data.user} role={data.role} />
       <main className="flex-1 overflow-y-auto">
         <div className="container mx-auto px-6 py-8">
           {children}

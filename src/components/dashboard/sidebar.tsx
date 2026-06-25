@@ -12,11 +12,21 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { UserMenu } from "@/components/dashboard/user-menu"
-import { Organization, Role } from "@/generated/prisma/client"
+import {  Role } from "@/generated/prisma/client"
 
 
 interface SidebarProps {
-  org: Organization
+  org: {
+    id: string;
+    name: string;
+    slug: string;
+    plan: string;
+    stripeId: string | null;
+    subscriptionId: string | null;
+    periodEnd: string | null;
+    createdAt: string;
+    updatedAt: string;
+} 
   user: {
     id?: string
     name?: string | null
