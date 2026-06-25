@@ -75,11 +75,13 @@ model User {
 }
 
 model Organization {
-  id       String  @id @default(cuid())
-  name     String
-  slug     String  @unique
-  plan     String  @default("free") // free | pro | team
-  stripeId String? @unique
+  id             String   @id @default(cuid())
+  name           String
+  slug           String   @unique
+  plan           String   @default("free")  // free | pro | team
+  stripeId       String?  @unique           // Stripe customer ID
+  subscriptionId String?  @unique           // Stripe subscription ID
+  periodEnd      DateTime?                  // current billing period end
 
   memberships Membership[]
   invites     Invite[]
