@@ -53,6 +53,34 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
+  events: {
+    async createUser({ user }) {
+      if(!user) return;
+      const name = user.name ?? "User"
+      const email = user.email ?? "username@gmail.com"
+      const userId = user.id
+
+      if(!userId || !email || !name) return
+
+      const slugBase = (email.split("@")[0] ?? user.id)
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "-")
+
+      await db.organization.create({
+        data: {
+          name: `first workspace`,
+          slug: `${slugBase}-${userId.slice(0, 6)}`,
+
+          memberships: {
+            create: {
+              userId,
+              role: "ADMIN",
+            },
+          },
+        },
+      })
+    },
+  },
 
   callbacks: {
     async jwt({ token, user }) {
@@ -75,5 +103,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
   pages: {
     signIn: "/login",
+    error:"/login"
   },
 })
