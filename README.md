@@ -1,79 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 # SaaS Starter Kit
 
-A production-ready Next.js starter with authentication, multi-tenant organizations, role-based access control, and Stripe billing — fully self-hosted, no vendor lock-in.
+A full-stack SaaS starter built with Next.js, TypeScript, Auth.js, Prisma, and PostgreSQL. It provides a foundation for applications that need authentication, organization workspaces, role-based access, password recovery, and transactional email.
 
-## What's included
+> This repository is a starter kit. Review the configuration, security settings, and deployment environment before using it in a production application.
 
-- **Auth** — Email/password, Google OAuth, and GitHub OAuth via Auth.js v5
-- **Password reset** — Secure token-based flow with rate limiting (3 emails/day) and expiry
-- **Multi-tenant orgs** — Every user gets a personal workspace on signup
-- **Role-based access** — `ADMIN`, `MEMBER`, `VIEWER` roles per organization
-- **Database** — Prisma ORM connected to Neon (serverless Postgres)
-- **Email** — Transactional emails via Resend + React Email
-- **UI** — shadcn/ui components with Tailwind CSS
-- **Toasts** — Sonner for all user-facing feedback
+## Features
 
----
+- **Authentication:** Email/password, Google OAuth, and GitHub OAuth through Auth.js v5.
+- **Password recovery:** Token-based reset flow with expiry and rate limiting.
+- **Organizations:** A personal workspace is created when a user registers.
+- **Access control:** Organization membership roles: `ADMIN`, `MEMBER`, and `VIEWER`.
+- **Database:** Prisma ORM with PostgreSQL (configured for Neon).
+- **Email:** Resend and React Email for transactional messages.
+- **UI:** Tailwind CSS, shadcn/ui, and Sonner notifications.
+- **Validation:** Zod and React Hook Form.
 
 ## Tech stack
 
 | Layer | Technology |
 |---|---|
-| Framework | Next.js 14 (App Router) |
+| Framework | Next.js 14 App Router |
 | Language | TypeScript |
-| Auth | Auth.js v5 (NextAuth) |
-| Database | Prisma + Neon (serverless Postgres) |
+| Authentication | Auth.js v5 |
+| Database | Prisma + Neon PostgreSQL |
 | Email | Resend + React Email |
 | UI | shadcn/ui + Tailwind CSS |
-| Toasts | Sonner |
-| Validation | Zod + react-hook-form |
+| Validation | Zod + React Hook Form |
 | Password hashing | bcryptjs |
-
----
 
 ## Getting started
 
-### 1. Clone the repo
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/nuespringramalimarouane-prog/starter-saas-kit.git
-cd saas-starter
+cd starter-saas-kit
 ```
 
 ### 2. Install dependencies
@@ -82,29 +43,24 @@ cd saas-starter
 npm install
 ```
 
-### 3. Set up environment variables
+### 3. Configure environment variables
 
-Create a `.env.local` file at the root of the project:
+Copy the example file:
 
 ```bash
 cp .env.example .env.local
 ```
 
-Then fill in the values — see the [Environment variables](#environment-variables) section below.
+Then provide the values described in the [Environment variables](#environment-variables) section. Never commit real credentials, API keys, OAuth secrets, or production database URLs.
 
-### 4. Push the database schema
+### 4. Set up Prisma
 
 ```bash
 npx prisma db push
-```
-
-### 5. Generate the Prisma client
-
-```bash
 npx prisma generate
 ```
 
-### 6. Start the dev server
+### 5. Start the development server
 
 ```bash
 npm run dev
@@ -112,208 +68,159 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
----
-
 ## Environment variables
 
-Create a `.env.local` file with the following keys:
+Create a `.env.local` file in the project root and configure the required services:
 
-```bash
-# ─── Database (Neon) ───────────────────────────────────────────────────────────
-# Get both URLs from console.neon.tech → your project → Connection Details
-# Select "Prisma" from the dropdown to get pre-formatted URLs
-
-DATABASE_URL="postgresql://user:pass@ep-xxx.neon.tech/neondb?sslmode=require&pgbouncer=true"
-# ─── Auth.js ───────────────────────────────────────────────────────────────────
-# Generate with: openssl rand -base64 32
-
+```env
+DATABASE_URL="postgresql://user:password@host/database?sslmode=require"
 AUTH_SECRET=""
 NEXTAUTH_URL="http://localhost:3000"
-
-# ─── Google OAuth ──────────────────────────────────────────────────────────────
-# console.cloud.google.com → APIs & Services → Credentials → Create OAuth client
-# Authorized redirect URI: http://localhost:3000/api/auth/callback/google
 
 GOOGLE_CLIENT_ID=""
 GOOGLE_CLIENT_SECRET=""
 
-# ─── GitHub OAuth ──────────────────────────────────────────────────────────────
-# github.com → Settings → Developer settings → OAuth Apps → New OAuth App
-# Homepage URL: http://localhost:3000
-# Callback URL: http://localhost:3000/api/auth/callback/github
-
 GITHUB_CLIENT_ID=""
 GITHUB_CLIENT_SECRET=""
 
-# ─── Resend (email) ────────────────────────────────────────────────────────────
-# resend.com → API Keys → Create API key
-
 RESEND_API_KEY=""
-CONTACT_FROM_EMAIL="you@yourdomain.com"
+CONTACT_FROM_EMAIL="you@example.com"
 ```
 
-> **Note:** `DATABASE_URL` uses Neon's pooled connection (for runtime queries). 
----
+Use the connection URLs and credentials from your own Neon, Google Cloud, GitHub OAuth, and Resend projects. Generate a strong `AUTH_SECRET` and keep all secrets outside version control.
 
-## Setting up OAuth providers
+## OAuth setup
 
 ### Google
 
-1. Go to [console.cloud.google.com](https://console.cloud.google.com)
-2. Create a project → APIs & Services → Credentials
-3. Create OAuth 2.0 Client ID (Web application)
-4. Add authorized redirect URI: `http://localhost:3000/api/auth/callback/google`
-5. Copy the Client ID and Client Secret into `.env.local`
+1. Create an OAuth client in Google Cloud Console.
+2. Add the local callback URL: `http://localhost:3000/api/auth/callback/google`.
+3. Add the resulting client ID and secret to `.env.local`.
 
 ### GitHub
 
-1. Go to GitHub → Settings → Developer settings → OAuth Apps
-2. Click **New OAuth App**
-3. Set Homepage URL to `http://localhost:3000`
-4. Set Authorization callback URL to `http://localhost:3000/api/auth/callback/github`
-5. Copy the Client ID and generate a Client Secret into `.env.local`
+1. Create an OAuth App under GitHub Developer Settings.
+2. Set the homepage URL to `http://localhost:3000`.
+3. Set the callback URL to `http://localhost:3000/api/auth/callback/github`.
+4. Add the client ID and secret to `.env.local`.
 
----
+For deployment, replace the local URLs with the application's actual domain.
 
 ## Project structure
 
-```
+The application is organized around authentication, protected dashboard pages, shared UI components, server utilities, and the Prisma schema.
+
+```text
 src/
 ├── app/
-│   ├── (auth)/                   # Auth pages (login, register, forgot/reset password)
-│   │   ├── login/
-│   │   ├── register/
-│   │   ├── forgot-password/
-│   │   └── reset-password/
-│   ├── (dashboard)/              # Protected dashboard routes
-│   ├── (marketing)/              # Public pages (landing, pricing)
+│   ├── (auth)/                   # Login, registration, and password recovery
+│   ├── (dashboard)/              # Protected application routes
+│   ├── (marketing)/              # Public landing and pricing pages
 │   └── api/
-│       └── auth/
-│           ├── [...nextauth]/    # Auth.js route handler
-│           ├── register/         # POST — create account
-│           ├── forgot-password/  # POST — send reset email
-│           └── reset-password/   # POST — update password
-├── components/
-│   ├── auth/
-│   │   └── signout-button.tsx
-│   ├── providers.tsx             # SessionProvider wrapper
-│   └── ui/                       # shadcn components
+│       └── auth/                 # Auth.js and account-related endpoints
+├── components/                   # Shared and feature-specific UI
 ├── lib/
-│   ├── db.ts                     # Prisma client singleton
-│   ├── email/
-│   │   ├── resend.ts             # Resend client
-│   │   └── reset-password.tsx    # React Email template
-│   └── validations/
-│       └── auth.ts               # Zod schemas
-├── proxy.ts                 # Route protection
-├── auth.ts                   # Auth.js 
-├── auth.condig.ts                   # Auth.js config
+│   ├── db.ts                     # Prisma client
+│   ├── email/                    # Resend client and email templates
+│   └── validations/               # Zod schemas
+├── proxy.ts                      # Route protection
+├── auth.ts                       # Auth.js configuration
 └── prisma/
-    └── schema.prisma
+    └── schema.prisma             # Database models
 ```
 
----
+Refer to the source tree for the exact implementation and file names.
 
-## Database schema
+## Database models
 
-The Prisma schema covers all Auth.js required models plus the app-specific models:
+The Prisma schema includes the Auth.js models and application-specific organization models.
 
 | Model | Purpose |
 |---|---|
-| `User` | Core user — works with both OAuth and credentials |
-| `Account` | OAuth provider accounts linked to a user |
-| `Session` | Active sessions (database strategy) |
-| `VerificationToken` | Email verification tokens |
-| `Organization` | Multi-tenant workspace |
-| `Membership` | User ↔ Org relationship with role |
-| `Invite` | Pending org invitations |
-| `PasswordResetToken` | Secure reset tokens with expiry and rate limiting |
+| `User` | User account |
+| `Account` | Linked OAuth provider account |
+| `Session` | User session |
+| `VerificationToken` | Verification token |
+| `Organization` | Workspace |
+| `Membership` | User-to-organization relationship and role |
+| `Invite` | Organization invitation |
+| `PasswordResetToken` | Password reset token with expiry and usage state |
 
-### Useful Prisma commands
+Useful Prisma commands:
 
 ```bash
-# Push schema changes to the database (dev)
+# Push the schema during development
 npx prisma db push
 
-# Create a migration (production)
-npx prisma migrate dev --name your-migration-name
+# Create a migration
+npx prisma migrate dev --name describe-your-change
 
-# Regenerate the Prisma client after schema changes
+# Apply migrations in production
+npx prisma migrate deploy
+
+# Regenerate the Prisma client
 npx prisma generate
 
-# Open Prisma Studio (visual DB browser)
+# Open Prisma Studio
 npx prisma studio
 ```
 
----
+## Authentication flows
 
-## Auth flow
+### Registration
 
-```
-Register (email/password)
-  → POST /api/auth/register
-  → Hash password with bcrypt
-  → Create User + personal Organization + ADMIN Membership
-  → Auto sign-in via credentials provider
-  → Redirect to /dashboard
+1. The registration endpoint validates the submitted data.
+2. The password is hashed before storage.
+3. A user, personal organization, and admin membership are created.
+4. The user is signed in and redirected to the dashboard.
 
-Login (email/password)
-  → signIn("credentials")
-  → Auth.js authorize() validates email + bcrypt hash
-  → JWT session created
-  → Redirect to /dashboard
+### Sign in
 
-Login (Google / GitHub)
-  → signIn("google" | "github")
-  → OAuth redirect → callback → Auth.js links Account to User
-  → JWT session created
-  → Redirect to /dashboard
+Users can authenticate with email/password or a configured Google or GitHub OAuth provider.
 
-Password reset
-  → POST /api/auth/forgot-password (rate limited: 3 emails/24h)
-  → Generates secure token, stores with 1h expiry
-  → Sends email via Resend
-  → User clicks link → /reset-password?token=...
-  → POST /api/auth/reset-password validates token (not used, not expired)
-  → Updates password, marks token as used
-```
+### Password reset
 
----
+The reset flow creates a time-limited token, sends a reset email through Resend, validates the token when the user submits a new password, and marks the token as used.
 
-## Route protection
+## Route protection and authorization
 
-`proxy.ts` protects all `/dashboard` routes. Any unauthenticated request is redirected to `/login`. Authenticated users hitting `/login` or `/register` are redirected to `/dashboard`.
+The project uses `proxy.ts` to protect dashboard routes and redirect unauthenticated users to the login page. Authentication alone is not sufficient for organization-level authorization: server-side actions should also verify the current user's membership and role for the requested organization.
 
-For role-based protection inside the dashboard, check the user's `Membership.role` against the org:
+Example role check:
 
 ```ts
-import { auth } from "@/lib/auth"
-import { db } from "@/lib/db"
-
-const session = await auth()
 const membership = await db.membership.findUnique({
-  where: { userId_orgId: { userId: session.user.id, orgId } },
-})
+  where: {
+    userId_orgId: { userId: session.user.id, orgId },
+  },
+});
 
 if (membership?.role !== "ADMIN") {
-  // unauthorized
+  // Reject the operation.
 }
 ```
 
----
+Adapt the example to the session and database helpers used by the relevant route or server action.
 
-## Deploying to Vercel
+## Deployment
 
-1. Push the repo to GitHub
-2. Import the project in [vercel.com](https://vercel.com)
-3. Add all environment variables from `.env.local` in the Vercel dashboard
-4. Update OAuth callback URLs to your production domain:
-   - Google: `https://yourdomain.com/api/auth/callback/google`
-   - GitHub: `https://yourdomain.com/api/auth/callback/github`
-5. Update `NEXTAUTH_URL` to your production URL
-6. Run `npx prisma migrate deploy` to apply migrations to the production database
+For a deployment:
 
----
+1. Deploy the application to your chosen hosting provider.
+2. Configure every required environment variable in the hosting dashboard.
+3. Use the production database URL and apply migrations with `npx prisma migrate deploy`.
+4. Update Google and GitHub OAuth callback URLs to the production domain.
+5. Set the production application URL in the authentication configuration.
+6. Verify registration, sign-in, password recovery, email delivery, and organization access before release.
+
+## Security checklist
+
+- Keep `.env.local` and all credentials out of Git.
+- Use a strong, unique authentication secret.
+- Use HTTPS in production.
+- Restrict OAuth callback URLs to the intended domains.
+- Verify organization membership and roles on the server for every protected operation.
+- Review rate limits, email configuration, session behavior, and database access before production use.
 
 ## License
 
