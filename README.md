@@ -19,7 +19,7 @@ A full-stack SaaS starter built with Next.js, TypeScript, Auth.js, Prisma, and P
 
 | Layer | Technology |
 |---|---|
-| Framework | Next.js 14 App Router |
+| Framework | Next.js 16 App Router |
 | Language | TypeScript |
 | Authentication | Auth.js v5 |
 | Database | Prisma + Neon PostgreSQL |
@@ -45,13 +45,7 @@ npm install
 
 ### 3. Configure environment variables
 
-Copy the example file:
-
-```bash
-cp .env.example .env.local
-```
-
-Then provide the values described in the [Environment variables](#environment-variables) section. Never commit real credentials, API keys, OAuth secrets, or production database URLs.
+Create a `.env.local` file in the project root and add the values described in the [Environment variables](#environment-variables) section. Never commit real credentials, API keys, OAuth secrets, or production database URLs.
 
 ### 4. Set up Prisma
 
@@ -184,23 +178,9 @@ The reset flow creates a time-limited token, sends a reset email through Resend,
 
 ## Route protection and authorization
 
-The project uses `proxy.ts` to protect dashboard routes and redirect unauthenticated users to the login page. Authentication alone is not sufficient for organization-level authorization: server-side actions should also verify the current user's membership and role for the requested organization.
+The project includes a `proxy.ts` route-protection layer. Verify the exact redirect and matcher behavior in the current source before relying on it. Authentication alone is not sufficient for organization-level authorization: server-side actions should also verify the current user's membership and role for the requested organization.
 
-Example role check:
-
-```ts
-const membership = await db.membership.findUnique({
-  where: {
-    userId_orgId: { userId: session.user.id, orgId },
-  },
-});
-
-if (membership?.role !== "ADMIN") {
-  // Reject the operation.
-}
-```
-
-Adapt the example to the session and database helpers used by the relevant route or server action.
+Before performing an organization-level operation, retrieve the current user's membership for that organization and enforce the required role on the server. Do not rely on client-side UI visibility as an authorization check.
 
 ## Deployment
 
